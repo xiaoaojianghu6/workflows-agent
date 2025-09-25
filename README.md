@@ -1,5 +1,7 @@
 # Workflows-Agent Learning Notes
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 本项目仓库主要用于记录和整理 AI Agent 工作流的实践过程。
 所有应用均通过 Docker 在本地环境中部署和测试。（例见Dify官方文档）内容会随着学习的拓展更新。
 
@@ -405,8 +407,8 @@ MCP 允许 Agent 调用外部或内部的“工具”，是实现复杂任务的
 
 本仓库作为个人学习笔记，未来会继续探索和实践workflow/agent的更多高级功能，并添加更多应用场景的工作流案例。
 
-
-
+## 许可 (License)
+本项目采用 [MIT 许可证](LICENSE)。
 
 
 
