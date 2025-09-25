@@ -1,0 +1,800 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: 生产质量审查等助手
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.0.25@325423749d5e71f8b4681af1b2ed46d7686cb1947e443a86ba5d14ac45ff85a4
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/siliconflow:0.0.12@2ab1fcd77138b7ecdd707790aa1936d5c187fca547ebd165728237b0630c3a44
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: stvlynn/doc:0.0.1@900d82963e63c505136dfc77f3e06329326e714ca66bed668224e811f73efc7b
+kind: app
+version: 0.3.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - document
+      allowed_file_upload_methods:
+      - remote_url
+      - local_file
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 你好，我是你的专业医疗器械生命流程审核助手，请问您遇到了什么问题？
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 我需要你针对我的文档提供专业修改建议
+    - 我需要你把我的文档修改成标准格式并生成对应的word
+    - 其他问题（非点击选项，请直接输入具体问题）
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: knowledge-retrieval
+      id: 1750487628022-source-1750938376284-target
+      selected: false
+      source: '1750487628022'
+      sourceHandle: source
+      target: '1750938376284'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: question-classifier
+      id: 1750487449305-source-1750939672762-target
+      selected: false
+      source: '1750487449305'
+      sourceHandle: source
+      target: '1750939672762'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: document-extractor
+      id: 1750939672762-1-1750487628022-target
+      selected: false
+      source: '1750939672762'
+      sourceHandle: '1'
+      target: '1750487628022'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: knowledge-retrieval
+      id: 1750939672762-2-1750939837350-target
+      selected: false
+      source: '1750939672762'
+      sourceHandle: '2'
+      target: '1750939837350'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1750939837350-source-1750939966062-target
+      selected: false
+      source: '1750939837350'
+      sourceHandle: source
+      target: '1750939966062'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1750938376284-source-1750939969444-target
+      selected: false
+      source: '1750938376284'
+      sourceHandle: source
+      target: '1750939969444'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1750939966062-source-1750940012417-target
+      selected: false
+      source: '1750939966062'
+      sourceHandle: source
+      target: '1750940012417'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: 1750939969444-source-1750940018693-target
+      source: '1750939969444'
+      sourceHandle: source
+      target: '1750940018693'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: question-classifier
+        targetType: document-extractor
+      id: 1750939672762-1751333146528-1751333233362-target
+      source: '1750939672762'
+      sourceHandle: '1751333146528'
+      target: '1751333233362'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: knowledge-retrieval
+      id: 1751333233362-source-1751333244003-target
+      source: '1751333233362'
+      sourceHandle: source
+      target: '1751333244003'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1751333244003-source-1751334031577-target
+      source: '1751333244003'
+      sourceHandle: source
+      target: '1751334031577'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: 1751334031577-source-1751334050597-target
+      source: '1751334031577'
+      sourceHandle: source
+      target: '1751334050597'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: answer
+      id: 1751334050597-source-1751335391391-target
+      source: '1751334050597'
+      sourceHandle: source
+      target: '1751335391391'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 文档标题
+          max_length: 48
+          options: []
+          required: false
+          type: text-input
+          variable: title
+        - label: 仪器名称
+          max_length: 48
+          options: []
+          required: false
+          type: text-input
+          variable: mech
+        - label: 业务方向
+          max_length: 48
+          options: []
+          required: false
+          type: text-input
+          variable: ar
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: 文档上传
+          max_length: 48
+          options: []
+          required: false
+          type: file
+          variable: file
+      height: 168
+      id: '1750487449305'
+      position:
+        x: 397.4239505663195
+        y: 127.65635891035546
+      positionAbsolute:
+        x: 397.4239505663195
+        y: 127.65635891035546
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器
+        type: document-extractor
+        variable_selector:
+        - '1750487449305'
+        - file
+      height: 92
+      id: '1750487628022'
+      position:
+        x: 699.407971902322
+        y: 127.65635891035546
+      positionAbsolute:
+        x: 699.407971902322
+        y: 127.65635891035546
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - yBSeHCZcGp+alUtTktvcq1JdE37Xxp/wU7Quswt+Fd395lcjEP4B3xlEkwrIdH0U
+        - jLtZiube44j/kWhEVUpT61LbhlOziX2AmjcY5gNfRg7WeS/FXUCGM6UJMQDRVki9
+        - aE1Fj4lqJddWcAZN+XpJSM08zlhSLC+tstQTR+tJpn4XcOdR20jL2Vj4tOadm11c
+        - PcvMu0XGO1kxAIz7fHAO5NftqI1C0i1DAXNa3+vWYdvMqm/VGI4rTEFoTkepxNjb
+        - Sz+CjCxFcMNt5hArrAxGPynNUanJISajJFGAjs2S72uep/X5nr46Tv3mChaI82Ba
+        - HpbVYgaIGvpj41eT+OXwqaYccQkvl33Lt1mr9TOid07Mz9rj+k0dI65UkKIZkwyH
+        - SQY23xXLm1hj7VgtomEN2+82wzzdAEGNqlzVza7mxKbWScsYc2EcpfJHc45l0X82
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank-v2
+            provider: langgenius/tongyi/tongyi
+          top_k: 4
+        query_variable_selector:
+        - '1750487449305'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 260
+      id: '1750938376284'
+      position:
+        x: 996.4458192485909
+        y: 127.65635891035546
+      positionAbsolute:
+        x: 996.4458192485909
+        y: 127.65635891035546
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: 根据上传文档提建议
+        - id: '2'
+          name: 直接问题咨询（无文档上传）
+        - id: '1751333146528'
+          name: 修改文档并生成格式正确的word
+        desc: ''
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        query_variable_selector:
+        - '1750487449305'
+        - sys.query
+        selected: false
+        title: 问题分类器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 210
+      id: '1750939672762'
+      position:
+        x: 397.4239505663195
+        y: 413
+      positionAbsolute:
+        x: 397.4239505663195
+        y: 413
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - yBSeHCZcGp+alUtTktvcq1JdE37Xxp/wU7Quswt+Fd395lcjEP4B3xlEkwrIdH0U
+        - jLtZiube44j/kWhEVUpT61LbhlOziX2AmjcY5gNfRg7WeS/FXUCGM6UJMQDRVki9
+        - aE1Fj4lqJddWcAZN+XpJSM08zlhSLC+tstQTR+tJpn4XcOdR20jL2Vj4tOadm11c
+        - PcvMu0XGO1kxAIz7fHAO5NftqI1C0i1DAXNa3+vWYdvMqm/VGI4rTEFoTkepxNjb
+        - SQY23xXLm1hj7VgtomEN2+82wzzdAEGNqlzVza7mxKbWScsYc2EcpfJHc45l0X82
+        - HpbVYgaIGvpj41eT+OXwqaYccQkvl33Lt1mr9TOid07Mz9rj+k0dI65UkKIZkwyH
+        - Sz+CjCxFcMNt5hArrAxGPynNUanJISajJFGAjs2S72uep/X5nr46Tv3mChaI82Ba
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank-v2
+            provider: langgenius/tongyi/tongyi
+          top_k: 4
+        query_variable_selector:
+        - '1750487449305'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索 2
+        type: knowledge-retrieval
+      height: 260
+      id: '1750939837350'
+      position:
+        x: 699.407971902322
+        y: 413
+      positionAbsolute:
+        x: 699.407971902322
+        y: 413
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1750939837350'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: e10accc2-ff3e-4bd8-ada6-ab010e6f447d
+          role: system
+          text: '你是一名熟悉中国大陆医疗器械法规和标准的智能助手，旨在为用户提供医疗器械生命周期后期管理中的法规建议与合规性支持。其中，用户的文档标题为{{#1750487449305.title#}}，仪器名称为{{#1750487449305.mech#}}，业务方向为{{#1750487449305.ar#}}（由于是选填，值可以为空）
+
+
+            医疗器械后期管理主要包括：
+
+            4. 生产与质量控制
+
+            5. 销售与市场监管
+
+            6. 上市后阶段（维护、不良事件监测、召回与退市）
+
+
+            请根据用户输入的问题{{#sys.query#}}，从知识库{{#context#}}中调取相关法规条文或监管要求，结合通用规范、制度细节、术语定义，给出明确的专业建议。必要时请指出可能违反的法规条款或未满足的合规要求。
+
+
+            ⚠️回答要求：
+
+            - 优先引用知识库中的法规细节
+
+            - 不使用泛泛的解释，应聚焦在合规执行建议、修正建议、流程标准
+
+            -如果可以检索到相应法规请直接注明具体条目'
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1750939966062'
+      position:
+        x: 996.4458192485909
+        y: 413
+      positionAbsolute:
+        x: 996.4458192485909
+        y: 413
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1750938376284'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: b23e17d0-295f-406a-9503-a55c039a1147
+          role: system
+          text: '你是一名精通中国大陆医疗器械法规的合规审阅专家，负责根据上传的文档内容{{#1750487628022.text#}}和问题{{#sys.query#}}结合医疗器械生命周期后期管理相关法规（涵盖生产与质量控制、销售与市场监管、上市后阶段），识别其中的潜在合规问题、缺漏要点，并提出可执行的修改建议。其中，用户的文档标题为{{#1750487449305.title#}}，仪器名称为{{#1750487449305.mech#}}，业务方向为{{#1750487449305.ar#}}（由于是选填，值可以为空）
+
+
+
+            请逐条阅读文档内容，参考以下标准要求给予反馈：
+
+            - 《医疗器械监督管理条例》
+
+            - 《医疗器械生产质量管理规范》（GMP）
+
+            - 《医疗器械说明书和标签管理规定》
+
+            - 《医疗器械不良事件监测和再评价管理办法》
+
+            - YY/T 0287-2017（ISO13485）
+
+            - 以及用户知识库中包含的法规{{#context#}}
+
+
+            ⚠️输出格式建议如下：
+
+            1. 存在问题 / 风险点
+
+            2. 建议依据的法规条款（如有）
+
+            3. 修正或补充建议（应具体、可执行）
+
+
+            如文档整体合规，也请说明“未发现明显合规问题”，并简要列出符合的关键点。'
+        selected: false
+        title: LLM 2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1750939969444'
+      position:
+        x: 1300.4458192485909
+        y: 127.65635891035546
+      positionAbsolute:
+        x: 1300.4458192485909
+        y: 127.65635891035546
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1750939966062.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 105
+      id: '1750940012417'
+      position:
+        x: 1300.4458192485909
+        y: 413
+      positionAbsolute:
+        x: 1300.4458192485909
+        y: 413
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1750939969444.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 2
+        type: answer
+        variables: []
+      height: 105
+      id: '1750940018693'
+      position:
+        x: 1300.4458192485909
+        y: 254.71564484094827
+      positionAbsolute:
+        x: 1300.4458192485909
+        y: 254.71564484094827
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: false
+        selected: false
+        title: 文档提取器 2
+        type: document-extractor
+        variable_selector:
+        - '1750487449305'
+        - file
+      height: 92
+      id: '1751333233362'
+      position:
+        x: 699.407971902322
+        y: 795.473691085714
+      positionAbsolute:
+        x: 699.407971902322
+        y: 795.473691085714
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - yBSeHCZcGp+alUtTktvcq1JdE37Xxp/wU7Quswt+Fd395lcjEP4B3xlEkwrIdH0U
+        - 3Xpwc6s8iZQmUBgxb0JEWtZrIOzU4wghWinQvKZAjosmV0bguLnZvCkLMozt3H4q
+        - IugUP49m0d+BlPGHosk8FrsonOj3gk36nNx/NvHPy4Bfb4XD9318YUH/9f//k4KR
+        - 6uh33p2fkKcmJwPXYRch+3BtXcxkfOJand6ZISP8jPMtK12GT2/Vcm2S2+nxoLbP
+        - SQY23xXLm1hj7VgtomEN2+82wzzdAEGNqlzVza7mxKbWScsYc2EcpfJHc45l0X82
+        - HpbVYgaIGvpj41eT+OXwqaYccQkvl33Lt1mr9TOid07Mz9rj+k0dI65UkKIZkwyH
+        - Sz+CjCxFcMNt5hArrAxGPynNUanJISajJFGAjs2S72uep/X5nr46Tv3mChaI82Ba
+        - PcvMu0XGO1kxAIz7fHAO5NftqI1C0i1DAXNa3+vWYdvMqm/VGI4rTEFoTkepxNjb
+        - aE1Fj4lqJddWcAZN+XpJSM08zlhSLC+tstQTR+tJpn4XcOdR20jL2Vj4tOadm11c
+        - jLtZiube44j/kWhEVUpT61LbhlOziX2AmjcY5gNfRg7WeS/FXUCGM6UJMQDRVki9
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: false
+          reranking_mode: reranking_model
+          reranking_model:
+            model: gte-rerank-v2
+            provider: langgenius/tongyi/tongyi
+          top_k: 4
+        query_variable_selector:
+        - '1750487449305'
+        - sys.query
+        retrieval_mode: multiple
+        selected: false
+        title: 知识检索 3
+        type: knowledge-retrieval
+      height: 344
+      id: '1751333244003'
+      position:
+        x: 996.4458192485909
+        y: 544
+      positionAbsolute:
+        x: 996.4458192485909
+        y: 544
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1751333244003'
+          - result
+        desc: ''
+        model:
+          completion_params: {}
+          mode: chat
+          name: deepseek-ai/DeepSeek-V3
+          provider: langgenius/siliconflow/siliconflow
+        prompt_template:
+        - id: 9b797978-5b06-40f0-9269-9a618bda577f
+          role: system
+          text: "你是一名精通中国大陆医疗器械法规的文档编辑专家。请根据上传的原始文档内容，以及知识库中关于医疗器械说明书、质量管理文件、维护/召回文档等相关法规要求，对文档内容进行专业重写，目标是使其符合中国国家药品监督管理局（NMPA）标准的格式与合规要求。其中，用户的文档标题为{{#1750487449305.title#}}，仪器名称为{{#1750487449305.mech#}}，业务方向为{{#1750487449305.ar#}}（由于是选填，值可以为空）\n\
+            \n输出要求如下：\n\n1. 保留原文中的有效内容（如技术参数、用途等）\n2. 对缺失或不合规部分进行结构性补充或调整\n   - 对于缺失但必须包含的内容，请以\
+            \ `XXX` 占位\n   - 对于模糊或不合规用语，请使用专业术语替换\n3. 使用标准且统一的 markdown 格式输出\n   -\
+            \ 表格、列表等内容按 markdown 规范呈现\n4. 参考法规包括（不限于）：\n   - 《医疗器械说明书和标签管理规定》\n  \
+            \ - 《医疗器械监督管理条例》\n   - 《医疗器械生产质量管理规范》（GMP）\n   - YY/T 0287-2017（ISO13485）\n\
+            5.⚠️ 格式要求（重点）：\n1. 所有输出内容请**直接使用 markdown 语法文本输出，不允许使用 ```markdown 代码块包裹整个文档**；\n\
+            2. 标题（#）之间、表格上下、段落之间请插入一行空行；\n3. 表格请使用 `|` + `-` 明确分隔，并避免使用中文符号；\n4. 行末不要使用两个空格换行，请使用自然段落换行；\n\
+            5. 所有内容请统一按照 markdown 正文格式输出，以便后续正确转换为 Word。\n\n例如：说明书、流程文件等文档类型应至少包含以下结构：\n\
+            - 产品名称、型号规格、注册证编号、生产单位信息\n- 产品适用范围与禁忌症\n- 结构组成与工作原理\n- 技术参数\n- 使用方法与注意事项\n\
+            - 储存运输条件\n- 有效期、生产批号、注册/备案编号\n- 图形符号说明（如有）\n- 售后服务与投诉渠道\n- 维护与保养说明\n-\
+            \ 警示语、警告语（如适用）\n- 日期、版本号等元数据\n\n请输出经过重写的合规版完整markdown，格式清晰统一、内容完整、具备可转\
+            \ Word 的结构和统一的字体格式等。"
+        selected: false
+        title: LLM 3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1751334031577'
+      position:
+        x: 1300.4458192485909
+        y: 544
+      positionAbsolute:
+        x: 1300.4458192485909
+        y: 544
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The Markdown content to be converted to Word document
+            ja_JP: Word ドキュメントに変換する Markdown コンテンツ
+            pt_BR: O conteúdo Markdown a ser convertido para documento Word
+            zh_Hans: 要转换为Word文档的Markdown内容
+          label:
+            en_US: Markdown Content
+            ja_JP: Markdown コンテンツ
+            pt_BR: Conteúdo Markdown
+            zh_Hans: Markdown内容
+          llm_description: The Markdown content that will be converted to a Word document
+          max: null
+          min: null
+          name: markdown_content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The title of the Word document
+            ja_JP: Word ドキュメントのタイトル
+            pt_BR: O título do documento Word
+            zh_Hans: Word文档的标题
+          label:
+            en_US: Document Title
+            ja_JP: ドキュメントタイトル
+            pt_BR: Título do Documento
+            zh_Hans: 文档标题
+          llm_description: The title that will be displayed at the top of the Word
+            document
+          max: null
+          min: null
+          name: title
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          markdown_content: ''
+          title: ''
+        provider_id: stvlynn/doc/doc
+        provider_name: stvlynn/doc/doc
+        provider_type: builtin
+        selected: false
+        title: Markdown转DOCX转换器
+        tool_configurations: {}
+        tool_description: 将Markdown内容转换为DOCX（Word）文档
+        tool_label: Markdown转DOCX转换器
+        tool_name: markdown_to_docx_converter
+        tool_parameters:
+          markdown_content:
+            type: mixed
+            value: '{{#1751334031577.text#}}'
+          title:
+            type: mixed
+            value: '{{#1750487449305.title#}}'
+        type: tool
+      height: 54
+      id: '1751334050597'
+      position:
+        x: 1300.4458192485909
+        y: 684.0792486260161
+      positionAbsolute:
+        x: 1300.4458192485909
+        y: 684.0792486260161
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1751334050597.text#}}
+
+          请点击下载文件：
+
+          {{#1751334050597.files#}}'
+        desc: ''
+        selected: false
+        title: 直接回复 3
+        type: answer
+        variables: []
+      height: 124
+      id: '1751335391391'
+      position:
+        x: 1300.4458192485909
+        y: 765.8845423073567
+      positionAbsolute:
+        x: 1300.4458192485909
+        y: 765.8845423073567
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -84.3863126914971
+      y: 62.300699710137906
+      zoom: 0.5915067563950946

@@ -1,0 +1,1273 @@
+app:
+  description: 术前评估智能体 - 基于循证医学的专业术前风险评估系统
+  icon: 🏥
+  icon_background: '#E8F4FD'
+  mode: workflow
+  name: 术前评估智能体-专业增强版
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/ollama:0.0.6@f430f3eb959f4863b1e87171544a8fec179441b90deda5693c85f07712d2a68c
+kind: app
+version: 0.3.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .PDF
+      - .DOC
+      - .DOCX
+      - .TXT
+      - .JPG
+      - .PNG
+      allowed_file_types:
+      - document
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: true
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '🏥 **术前评估智能体**
+
+
+      我是您的专业术前评估助手，基于最新的循证医学证据和国际权威指南（ACC/AHA、ESA、ASA），为您提供：
+
+
+      📊 **核心评估功能**：
+
+      - RCRI心血管风险分层评估
+
+      - NSQIP围手术期风险计算
+
+      - 个体化术前检查建议
+
+      - 药物管理方案制定
+
+      - 麻醉方案选择指导
+
+      - 风险管控策略制定
+
+
+      🎯 **专业特色**：
+
+      - 基于ACC/AHA 2014指南的心血管风险评估
+
+      - 符合ASA标准的麻醉风险分层
+
+      - 个体化的检查和准备方案
+
+      - 循证医学证据支持
+
+
+      📋 **输入说明**：
+
+      - 年龄：填写数字，如"65"
+
+      - 性别：填写"男"或"女"
+
+      - 体重：填写数字，如"70"（kg）
+
+      - 身高：填写数字，如"170"（cm，选填）
+
+      - 既往病史：如"高血压，糖尿病，冠心病"
+
+      - 过敏史：如"青霉素过敏"（选填）
+
+      - 手术类型：如"腹腔镜胆囊切除术"
+
+      - 手术时长：如"2"（小时，选填）
+
+      - 特殊情况：重要补充信息（选填）
+
+
+      请提供患者信息，我将为您进行全面的术前评估。
+
+      '
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 65岁男性患者，高血压、糖尿病史，拟行腹腔镜胆囊切除术
+    - 80岁女性患者，冠心病、心衰史，拟行髋关节置换术
+    - 45岁男性患者，无特殊病史，拟行甲状腺手术
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: start-to-parser
+      source: '1754544364758'
+      sourceHandle: source
+      target: '1754544373939'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: code
+      id: parser-to-risk
+      source: '1754544373939'
+      sourceHandle: source
+      target: '1754544473939'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: assessment-to-end
+      source: '1754544573939'
+      sourceHandle: source
+      target: '1754544673939'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: knowledge-retrieval
+      id: 1754544473939-source-1755160134348-target
+      source: '1754544473939'
+      sourceHandle: source
+      target: '1755160134348'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: 1755160134348-source-1754544573939-target
+      source: '1755160134348'
+      sourceHandle: source
+      target: '1754544573939'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: 患者信息输入
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 年龄
+          max_length: 10
+          options: []
+          required: true
+          type: text-input
+          variable: age
+        - label: 性别
+          max_length: 10
+          options: []
+          required: true
+          type: text-input
+          variable: gender
+        - label: 体重(kg)
+          max_length: 10
+          options: []
+          required: true
+          type: text-input
+          variable: weight
+        - label: 身高(cm)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: height
+        - label: 既往病史
+          max_length: 500
+          options: []
+          required: false
+          type: text-input
+          variable: medical_history
+        - label: 过敏史
+          max_length: 200
+          options: []
+          required: false
+          type: text-input
+          variable: allergies
+        - label: 手术类型
+          max_length: 200
+          options: []
+          required: true
+          type: text-input
+          variable: surgery_type
+        - label: 预计手术时长(小时)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: surgery_duration
+        - label: 特殊情况说明
+          max_length: 1000
+          options: []
+          required: false
+          type: paragraph
+          variable: special_notes
+        - label: 生命体征-体温(℃)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: temperature
+        - label: 生命体征-脉搏(次/分)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: pulse
+        - label: 生命体征-呼吸(次/分)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: respiration
+        - label: 生命体征-血压(mmHg)
+          max_length: 20
+          options: []
+          required: false
+          type: text-input
+          variable: blood_pressure
+        - label: 实验室检查-血红蛋白(g/L)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: hemoglobin
+        - label: 实验室检查-白细胞(×10⁹/L)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: white_blood_cell
+        - label: 实验室检查-血小板(×10⁹/L)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: platelet
+        - label: 实验室检查-血糖(mmol/L)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: glucose
+        - label: 实验室检查-肌酐(μmol/L)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: creatinine
+        - label: 实验室检查-白蛋白(g/L)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: albumin
+        - label: 凝血功能-PT(s)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: pt
+        - label: 凝血功能-APTT(s)
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: aptt
+        - label: 凝血功能-INR
+          max_length: 10
+          options: []
+          required: false
+          type: text-input
+          variable: inr
+        - label: 当前用药详情
+          max_length: 1000
+          options: []
+          required: false
+          type: paragraph
+          variable: current_medications
+        - label: 心血管疾病史详情
+          max_length: 500
+          options: []
+          required: false
+          type: text-input
+          variable: cardiovascular_history
+        - label: 呼吸系统疾病史详情
+          max_length: 500
+          options: []
+          required: false
+          type: text-input
+          variable: respiratory_history
+        - label: 内分泌疾病史详情
+          max_length: 500
+          options: []
+          required: false
+          type: text-input
+          variable: endocrine_history
+        - label: 肾脏疾病史详情
+          max_length: 500
+          options: []
+          required: false
+          type: text-input
+          variable: renal_history
+        - label: 手术紧急程度
+          max_length: 50
+          options: []
+          required: false
+          type: text-input
+          variable: surgery_urgency
+        - label: 麻醉方式偏好
+          max_length: 100
+          options: []
+          required: false
+          type: text-input
+          variable: anesthesia_preference
+      height: 845
+      id: '1754544364758'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(age: str, gender: str, weight: str, height: str, medical_history:\
+          \ str, allergies: str, surgery_type: str, surgery_duration: str, special_notes:\
+          \ str, temperature: str, pulse: str, respiration: str, blood_pressure: str,\
+          \ hemoglobin: str, white_blood_cell: str, platelet: str, glucose: str, creatinine:\
+          \ str, albumin: str, pt: str, aptt: str, inr: str, current_medications:\
+          \ str, cardiovascular_history: str, respiratory_history: str, endocrine_history:\
+          \ str, renal_history: str, surgery_urgency: str, anesthesia_preference:\
+          \ str) -> dict:\n    \"\"\"增强版患者信息解析器\"\"\"\n    try:\n        import re\n\
+          \n        # 基础数据清理和转换\n        age_num = int(age.strip()) if age.strip().isdigit()\
+          \ else 0\n        gender_clean = gender.strip()\n        weight_num = float(weight.strip())\
+          \ if weight.strip().replace('.', '').isdigit() else 0\n        height_num\
+          \ = float(height.strip()) if height and height.strip().replace('.', '').isdigit()\
+          \ else 0\n        duration_num = float(surgery_duration.strip()) if surgery_duration\
+          \ and surgery_duration.strip().replace('.', '').isdigit() else 0\n\n   \
+          \     # 生命体征处理\n        vitals = {}\n        vitals[\"temperature\"] = float(temperature.strip())\
+          \ if temperature and temperature.strip().replace('.', '').isdigit() else\
+          \ 0\n        vitals[\"pulse\"] = int(pulse.strip()) if pulse and pulse.strip().isdigit()\
+          \ else 0\n        vitals[\"respiration\"] = int(respiration.strip()) if\
+          \ respiration and respiration.strip().isdigit() else 0\n        vitals[\"\
+          blood_pressure\"] = blood_pressure.strip() if blood_pressure else \"\"\n\
+          \n        # 实验室检查处理\n        lab_results = {}\n        lab_results[\"hemoglobin\"\
+          ] = float(hemoglobin.strip()) if hemoglobin and hemoglobin.strip().replace('.',\
+          \ '').isdigit() else 0\n        lab_results[\"white_blood_cell\"] = float(white_blood_cell.strip())\
+          \ if white_blood_cell and white_blood_cell.strip().replace('.', '').isdigit()\
+          \ else 0\n        lab_results[\"platelet\"] = float(platelet.strip()) if\
+          \ platelet and platelet.strip().replace('.', '').isdigit() else 0\n    \
+          \    lab_results[\"glucose\"] = float(glucose.strip()) if glucose and glucose.strip().replace('.',\
+          \ '').isdigit() else 0\n        lab_results[\"creatinine\"] = float(creatinine.strip())\
+          \ if creatinine and creatinine.strip().replace('.', '').isdigit() else 0\n\
+          \        lab_results[\"albumin\"] = float(albumin.strip()) if albumin and\
+          \ albumin.strip().replace('.', '').isdigit() else 0\n\n        # 凝血功能处理\n\
+          \        coagulation = {}\n        coagulation[\"pt\"] = float(pt.strip())\
+          \ if pt and pt.strip().replace('.', '').isdigit() else 0\n        coagulation[\"\
+          aptt\"] = float(aptt.strip()) if aptt and aptt.strip().replace('.', '').isdigit()\
+          \ else 0\n        coagulation[\"inr\"] = float(inr.strip()) if inr and inr.strip().replace('.',\
+          \ '').isdigit() else 0\n\n        # 处理既往病史\n        medical_history_list\
+          \ = []\n        if medical_history and medical_history.strip().lower() not\
+          \ in [\"无\", \"没有\", \"无病史\", \"\"]:\n            diseases = re.split(r'[，,、；;]',\
+          \ medical_history)\n            for disease in diseases:\n             \
+          \   disease = disease.strip()\n                if disease:\n           \
+          \         medical_history_list.append(disease)\n\n        # 处理过敏史\n    \
+          \    allergies_list = []\n        if allergies and allergies.strip().lower()\
+          \ not in [\"无\", \"没有\", \"无过敏\", \"\"]:\n            allergy_items = re.split(r'[，,、；;]',\
+          \ allergies)\n            for allergy in allergy_items:\n              \
+          \  allergy = allergy.strip()\n                if allergy:\n            \
+          \        allergies_list.append(allergy)\n\n        # 处理用药史\n        medications_list\
+          \ = []\n        if current_medications and current_medications.strip().lower()\
+          \ not in [\"无\", \"没有\", \"无用药\", \"\"]:\n            med_items = re.split(r'[，,、；;]',\
+          \ current_medications)\n            for med in med_items:\n            \
+          \    med = med.strip()\n                if med:\n                    medications_list.append(med)\n\
+          \n        # 计算BMI\n        bmi = None\n        bmi_category = \"未知\"\n \
+          \       if height_num > 0 and weight_num > 0:\n            bmi = round(weight_num\
+          \ / ((height_num/100) ** 2), 1)\n            if bmi < 18.5:\n          \
+          \      bmi_category = \"偏瘦\"\n            elif bmi < 24:\n             \
+          \   bmi_category = \"正常\"\n            elif bmi < 28:\n                bmi_category\
+          \ = \"超重\"\n            else:\n                bmi_category = \"肥胖\"\n\n\
+          \        # 生成详细患者描述\n        description_parts = [f\"患者{gender_clean}性，{age_num}岁，体重{weight_num}kg\"\
+          ]\n\n        if height_num > 0:\n            description_parts.append(f\"\
+          身高{height_num}cm，BMI {bmi}({bmi_category})\")\n\n        # 生命体征描述\n    \
+          \    if vitals[\"temperature\"] > 0:\n            description_parts.append(f\"\
+          体温{vitals['temperature']}℃\")\n        if vitals[\"pulse\"] > 0:\n     \
+          \       description_parts.append(f\"脉搏{vitals['pulse']}次/分\")\n        if\
+          \ vitals[\"blood_pressure\"]:\n            description_parts.append(f\"\
+          血压{vitals['blood_pressure']}\")\n\n        # 病史描述\n        if medical_history_list:\n\
+          \            description_parts.append(f\"既往病史：{', '.join(medical_history_list)}\"\
+          )\n        else:\n            description_parts.append(\"既往无特殊病史\")\n\n\
+          \        if allergies_list:\n            description_parts.append(f\"过敏史：{',\
+          \ '.join(allergies_list)}\")\n\n        if medications_list:\n         \
+          \   description_parts.append(f\"当前用药：{', '.join(medications_list)}\")\n\n\
+          \        # 手术信息\n        description_parts.append(f\"拟行{surgery_type.strip()}手术\"\
+          )\n\n        if duration_num > 0:\n            description_parts.append(f\"\
+          预计手术时长{duration_num}小时\")\n\n        if surgery_urgency and surgery_urgency.strip():\n\
+          \            description_parts.append(f\"手术紧急程度：{surgery_urgency.strip()}\"\
+          )\n\n        if anesthesia_preference and anesthesia_preference.strip():\n\
+          \            description_parts.append(f\"麻醉方式偏好：{anesthesia_preference.strip()}\"\
+          )\n\n        if special_notes and special_notes.strip():\n            description_parts.append(f\"\
+          特殊情况：{special_notes.strip()}\")\n\n        patient_description = \"，\".join(description_parts)\n\
+          \n        return {\n            \"patient_data\": {\n                \"\
+          age\": age_num,\n                \"gender\": gender_clean,\n           \
+          \     \"weight\": weight_num,\n                \"height\": height_num,\n\
+          \                \"bmi\": bmi,\n                \"bmi_category\": bmi_category,\n\
+          \                \"medical_history\": medical_history_list,\n          \
+          \      \"allergies\": allergies_list,\n                \"medications\":\
+          \ medications_list,\n                \"surgery_type\": surgery_type.strip(),\n\
+          \                \"surgery_duration\": duration_num,\n                \"\
+          surgery_urgency\": surgery_urgency.strip() if surgery_urgency else \"\"\
+          ,\n                \"anesthesia_preference\": anesthesia_preference.strip()\
+          \ if anesthesia_preference else \"\",\n                \"special_notes\"\
+          : special_notes.strip() if special_notes else \"\",\n                \"\
+          vitals\": vitals,\n                \"lab_results\": lab_results,\n     \
+          \           \"coagulation\": coagulation,\n                \"cardiovascular_history\"\
+          : cardiovascular_history.strip() if cardiovascular_history else \"\",\n\
+          \                \"respiratory_history\": respiratory_history.strip() if\
+          \ respiratory_history else \"\",\n                \"endocrine_history\"\
+          : endocrine_history.strip() if endocrine_history else \"\",\n          \
+          \      \"renal_history\": renal_history.strip() if renal_history else \"\
+          \"\n            },\n            \"patient_description\": patient_description,\n\
+          \            \"processing_status\": \"success\"\n        }\n\n    except\
+          \ Exception as e:\n        return {\n            \"patient_data\": {},\n\
+          \            \"patient_description\": \"患者信息解析出错\",\n            \"processing_status\"\
+          : \"error\"\n        }\n"
+        code_language: python3
+        desc: 患者信息解析器
+        outputs:
+          patient_data:
+            children: null
+            type: object
+          patient_description:
+            children: null
+            type: string
+          processing_status:
+            children: null
+            type: string
+        selected: false
+        title: 患者信息解析器
+        type: code
+        variables:
+        - value_selector:
+          - '1754544364758'
+          - age
+          value_type: string
+          variable: age
+        - value_selector:
+          - '1754544364758'
+          - gender
+          value_type: string
+          variable: gender
+        - value_selector:
+          - '1754544364758'
+          - weight
+          value_type: string
+          variable: weight
+        - value_selector:
+          - '1754544364758'
+          - height
+          value_type: string
+          variable: height
+        - value_selector:
+          - '1754544364758'
+          - medical_history
+          value_type: string
+          variable: medical_history
+        - value_selector:
+          - '1754544364758'
+          - allergies
+          value_type: string
+          variable: allergies
+        - value_selector:
+          - '1754544364758'
+          - surgery_type
+          value_type: string
+          variable: surgery_type
+        - value_selector:
+          - '1754544364758'
+          - surgery_duration
+          value_type: string
+          variable: surgery_duration
+        - value_selector:
+          - '1754544364758'
+          - special_notes
+          value_type: string
+          variable: special_notes
+        - value_selector:
+          - '1754544364758'
+          - temperature
+          value_type: string
+          variable: temperature
+        - value_selector:
+          - '1754544364758'
+          - pulse
+          value_type: string
+          variable: pulse
+        - value_selector:
+          - '1754544364758'
+          - respiration
+          value_type: string
+          variable: respiration
+        - value_selector:
+          - '1754544364758'
+          - blood_pressure
+          value_type: string
+          variable: blood_pressure
+        - value_selector:
+          - '1754544364758'
+          - hemoglobin
+          value_type: string
+          variable: hemoglobin
+        - value_selector:
+          - '1754544364758'
+          - white_blood_cell
+          value_type: string
+          variable: white_blood_cell
+        - value_selector:
+          - '1754544364758'
+          - platelet
+          value_type: string
+          variable: platelet
+        - value_selector:
+          - '1754544364758'
+          - glucose
+          value_type: string
+          variable: glucose
+        - value_selector:
+          - '1754544364758'
+          - creatinine
+          value_type: string
+          variable: creatinine
+        - value_selector:
+          - '1754544364758'
+          - albumin
+          value_type: string
+          variable: albumin
+        - value_selector:
+          - '1754544364758'
+          - pt
+          value_type: string
+          variable: pt
+        - value_selector:
+          - '1754544364758'
+          - aptt
+          value_type: string
+          variable: aptt
+        - value_selector:
+          - '1754544364758'
+          - inr
+          value_type: string
+          variable: inr
+        - value_selector:
+          - '1754544364758'
+          - current_medications
+          value_type: string
+          variable: current_medications
+        - value_selector:
+          - '1754544364758'
+          - cardiovascular_history
+          value_type: string
+          variable: cardiovascular_history
+        - value_selector:
+          - '1754544364758'
+          - respiratory_history
+          value_type: string
+          variable: respiratory_history
+        - value_selector:
+          - '1754544364758'
+          - endocrine_history
+          value_type: string
+          variable: endocrine_history
+        - value_selector:
+          - '1754544364758'
+          - renal_history
+          value_type: string
+          variable: renal_history
+        - value_selector:
+          - '1754544364758'
+          - surgery_urgency
+          value_type: string
+          variable: surgery_urgency
+        - value_selector:
+          - '1754544364758'
+          - anesthesia_preference
+          value_type: string
+          variable: anesthesia_preference
+      height: 81
+      id: '1754544373939'
+      position:
+        x: 350
+        y: 282
+      positionAbsolute:
+        x: 350
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(patient_data: dict, patient_description: str) -> dict:\n \
+          \   \"\"\"增强版风险评估计算器\"\"\"\n    try:\n        if not patient_data:\n   \
+          \         return {\"risk_assessment\": {}, \"processing_status\": \"error\"\
+          }\n\n        age = patient_data.get('age', 0)\n        medical_history =\
+          \ patient_data.get('medical_history', [])\n        surgery_type = patient_data.get('surgery_type',\
+          \ '')\n        bmi = patient_data.get('bmi', 0)\n        vitals = patient_data.get('vitals',\
+          \ {})\n        lab_results = patient_data.get('lab_results', {})\n     \
+          \   coagulation = patient_data.get('coagulation', {})\n\n        # RCRI评分计算\n\
+          \        rcri_score = 0\n        risk_factors = []\n\n        # 心血管风险因素\n\
+          \        cardiovascular_diseases = ['冠心病', '心脏病', '心梗', '心肌梗死', '高血压']\n\
+          \        heart_failure_diseases = ['心衰', '心力衰竭', '心功能不全']\n        stroke_diseases\
+          \ = ['脑梗', '脑血管病', '中风', '脑卒中']\n        diabetes_keywords = ['糖尿病', '胰岛素']\n\
+          \        renal_diseases = ['肾病', '肾衰', '肾功能不全', '尿毒症']\n\n        # 检查RCRI风险因素\n\
+          \        for disease in medical_history:\n            if any(cv in disease\
+          \ for cv in cardiovascular_diseases):\n                rcri_score += 1\n\
+          \                risk_factors.append(\"冠状动脉疾病史\")\n                break\n\
+          \n        for disease in medical_history:\n            if any(hf in disease\
+          \ for hf in heart_failure_diseases):\n                rcri_score += 1\n\
+          \                risk_factors.append(\"心力衰竭史\")\n                break\n\
+          \n        for disease in medical_history:\n            if any(stroke in\
+          \ disease for stroke in stroke_diseases):\n                rcri_score +=\
+          \ 1\n                risk_factors.append(\"脑血管病史\")\n                break\n\
+          \n        for disease in medical_history:\n            if any(dm in disease\
+          \ for dm in diabetes_keywords):\n                rcri_score += 1\n     \
+          \           risk_factors.append(\"需胰岛素治疗的糖尿病\")\n                break\n\
+          \n        for disease in medical_history:\n            if any(renal in disease\
+          \ for renal in renal_diseases):\n                rcri_score += 1\n     \
+          \           risk_factors.append(\"肾功能不全\")\n                break\n\n  \
+          \      # 高风险手术\n        high_risk_surgeries = ['血管', '心脏', '胸', '开胸', '开腹',\
+          \ '神经外科', '肝', '胰腺']\n        if any(hrs in surgery_type for hrs in high_risk_surgeries):\n\
+          \            rcri_score += 1\n            risk_factors.append(\"高风险手术\"\
+          )\n\n        # 实验室检查风险评估\n        lab_risks = []\n        if lab_results.get('hemoglobin',\
+          \ 0) > 0:\n            hb = lab_results['hemoglobin']\n            if hb\
+          \ < 90:\n                lab_risks.append(\"严重贫血(Hb<90g/L)\")\n        \
+          \        rcri_score += 1\n            elif hb < 110:\n                lab_risks.append(\"\
+          轻度贫血(Hb<110g/L)\")\n\n        if lab_results.get('glucose', 0) > 0:\n  \
+          \          glucose = lab_results['glucose']\n            if glucose > 11.1:\n\
+          \                lab_risks.append(\"血糖控制不佳(>11.1mmol/L)\")\n           \
+          \ elif glucose > 7.0:\n                lab_risks.append(\"血糖轻度升高(>7.0mmol/L)\"\
+          )\n\n        if lab_results.get('creatinine', 0) > 0:\n            cr =\
+          \ lab_results['creatinine']\n            if cr > 177:\n                lab_risks.append(\"\
+          肾功能不全(Cr>177μmol/L)\")\n                if \"肾功能不全\" not in risk_factors:\n\
+          \                    rcri_score += 1\n                    risk_factors.append(\"\
+          肾功能不全\")\n            elif cr > 133:\n                lab_risks.append(\"\
+          肾功能轻度异常(Cr>133μmol/L)\")\n\n        if lab_results.get('albumin', 0) > 0:\n\
+          \            alb = lab_results['albumin']\n            if alb < 30:\n  \
+          \              lab_risks.append(\"低蛋白血症(Alb<30g/L)\")\n\n        # 凝血功能评估\n\
+          \        coag_risks = []\n        if coagulation.get('inr', 0) > 0:\n  \
+          \          inr = coagulation['inr']\n            if inr > 1.5:\n       \
+          \         coag_risks.append(\"凝血功能异常(INR>1.5)\")\n            elif inr >\
+          \ 1.3:\n                coag_risks.append(\"凝血功能轻度异常(INR>1.3)\")\n\n   \
+          \     # 生命体征评估\n        vital_risks = []\n        if vitals.get('temperature',\
+          \ 0) > 0:\n            temp = vitals['temperature']\n            if temp\
+          \ > 38.5:\n                vital_risks.append(\"发热(>38.5℃)\")\n        \
+          \    elif temp < 36.0:\n                vital_risks.append(\"体温过低(<36℃)\"\
+          )\n\n        if vitals.get('pulse', 0) > 0:\n            pulse = vitals['pulse']\n\
+          \            if pulse > 100:\n                vital_risks.append(\"心动过速(>100次/分)\"\
+          )\n            elif pulse < 60:\n                vital_risks.append(\"心动过缓(<60次/分)\"\
+          )\n\n        # 风险分层\n        if rcri_score == 0:\n            risk_level\
+          \ = \"低风险\"\n            cardiac_risk = \"0.4%\"\n        elif rcri_score\
+          \ == 1:\n            risk_level = \"低-中风险\"\n            cardiac_risk =\
+          \ \"1.0%\"\n        elif rcri_score == 2:\n            risk_level = \"中风险\"\
+          \n            cardiac_risk = \"2.4%\"\n        else:\n            risk_level\
+          \ = \"高风险\"\n            cardiac_risk = \"≥5.4%\"\n\n        # ASA分级预估\n\
+          \        if not medical_history and age < 65 and not lab_risks and not vital_risks:\n\
+          \            asa_grade = \"ASA I\"\n        elif len(medical_history) <=\
+          \ 1 and age < 75 and len(lab_risks) <= 1:\n            asa_grade = \"ASA\
+          \ II\"\n        elif len(medical_history) >= 2 or age >= 80 or len(lab_risks)\
+          \ >= 2:\n            asa_grade = \"ASA III\"\n        else:\n          \
+          \  asa_grade = \"ASA II\"\n\n        # 其他风险评估\n        additional_risks\
+          \ = []\n        if age >= 80:\n            additional_risks.append(\"高龄风险\"\
+          )\n        if bmi and bmi > 30:\n            additional_risks.append(\"\
+          肥胖风险\")\n        if bmi and bmi < 18.5:\n            additional_risks.append(\"\
+          营养不良风险\")\n\n        # 手术紧急程度风险\n        urgency = patient_data.get('surgery_urgency',\
+          \ '')\n        if urgency and '急诊' in urgency:\n            additional_risks.append(\"\
+          急诊手术风险\")\n\n        return {\n            \"risk_assessment\": {\n    \
+          \            \"rcri_score\": rcri_score,\n                \"risk_level\"\
+          : risk_level,\n                \"cardiac_risk\": cardiac_risk,\n       \
+          \         \"asa_grade\": asa_grade,\n                \"risk_factors\": risk_factors,\n\
+          \                \"additional_risks\": additional_risks,\n             \
+          \   \"lab_risks\": lab_risks,\n                \"coagulation_risks\": coag_risks,\n\
+          \                \"vital_risks\": vital_risks\n            },\n        \
+          \    \"processing_status\": \"success\"\n        }\n\n    except Exception\
+          \ as e:\n        return {\n            \"risk_assessment\": {},\n      \
+          \      \"processing_status\": \"error\"\n        }\n"
+        code_language: python3
+        desc: 风险评估计算器
+        outputs:
+          processing_status:
+            children: null
+            type: string
+          risk_assessment:
+            children: null
+            type: object
+        selected: false
+        title: 风险评估计算器
+        type: code
+        variables:
+        - value_selector:
+          - '1754544373939'
+          - patient_data
+          value_type: object
+          variable: patient_data
+        - value_selector:
+          - '1754544373939'
+          - patient_description
+          value_type: string
+          variable: patient_description
+      height: 81
+      id: '1754544473939'
+      position:
+        x: 693.5166947198102
+        y: 282
+      positionAbsolute:
+        x: 693.5166947198102
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 术前评估专家
+        model:
+          completion_params:
+            temperature: 0.1
+          mode: chat
+          name: qwen3:30b
+          provider: langgenius/ollama/ollama
+        prompt_template:
+        - id: system
+          role: system
+          text: '你是一名国际知名的围手术期医学专家和麻醉科主任医师，拥有30年临床经验，专门负责术前评估和围手术期风险管理。
+
+
+            ## 专业背景
+
+            - 美国心脏病学会/美国心脏协会(ACC/AHA)围手术期指南专家委员
+
+            - 美国外科医师学会NSQIP质量改进项目顾问
+
+            - 欧洲麻醉学会(ESA)围手术期医学分会主席
+
+            - 中华医学会麻醉学分会围手术期医学学组组长
+
+
+            ## 核心专长
+
+            - 风险评估：ACC/AHA心血管风险评估、NSQIP风险计算、多维度风险分层
+
+            - 循证医学：基于最新指南的个体化评估方案制定
+
+            - 质量管理：围手术期质量控制和患者安全管理
+
+            - 多学科协作：心内科、呼吸科、内分泌科等多学科会诊
+
+
+            ## 评估标准
+
+            你必须按照以下结构提供专业的术前评估报告：
+
+
+            ### 🔍 **患者信息总结**
+
+            - **基本信息**：年龄、性别、BMI、ASA分级
+
+            - **手术信息**：手术类型、紧急程度、预期时长、失血风险
+
+            - **主要合并症**：按系统分类的重要疾病
+
+
+            ### 📊 **风险分层评估**
+
+            **心血管风险评估表：**
+
+            | 风险因素 | 存在情况 | RCRI评分 | 风险等级 |
+
+            |----------|----------|----------|----------|
+
+            | 冠心病史 | 是/否 | X分 | 🔴🟡🟢 |
+
+            | 心衰史 | 是/否 | X分 | 🔴🟡🟢 |
+
+            | 脑血管病史 | 是/否 | X分 | 🔴🟡🟢 |
+
+            | 胰岛素依赖性糖尿病 | 是/否 | X分 | 🔴🟡🟢 |
+
+            | 肾功能不全 | 是/否 | X分 | 🔴🟡🟢 |
+
+            | 高风险手术 | 是/否 | X分 | 🔴🟡🟢 |
+
+
+            **NSQIP风险预测：**
+
+            | 并发症类型 | 预测风险 | 风险等级 | 预防措施 |
+
+            |------------|----------|----------|----------|
+
+            | 心脏并发症 | X.X% | 🔴🟡🟢 | 具体措施 |
+
+            | 肺部并发症 | X.X% | 🔴🟡🟢 | 具体措施 |
+
+            | 肾脏并发症 | X.X% | 🔴🟡🟢 | 具体措施 |
+
+
+            ### 🧪 **术前检查建议**
+
+            **必要检查清单：**
+
+            | 检查项目 | 适应症 | 紧急程度 | 预期结果 |
+
+            |----------|--------|----------|----------|
+
+            | 血常规 | 所有患者 | 必须 | 正常范围 |
+
+            | 生化全套 | >50岁或合并症 | 必须 | 正常范围 |
+
+            | 心电图 | 心血管风险 | 必须 | 正常/异常 |
+
+
+            ### 💊 **术前准备方案**
+
+            **药物管理计划：**
+
+            ```
+
+            停药建议：
+
+            • 抗凝药物：术前X天停用，桥接方案
+
+            • 抗血小板药物：根据血栓风险决定
+
+            • 降糖药物：术前调整方案
+
+
+            继续用药：
+
+            • β受体阻滞剂：继续使用
+
+            • ACEI/ARB：术前停用或继续
+
+            • 他汀类药物：继续使用
+
+            ```
+
+
+            ### ⚠️ **风险管控策略**
+
+            **高风险因素管控：**
+
+            ```
+
+            🔴 高风险管控：
+
+            • 心血管监测：连续心电监测、有创血压
+
+            • 肺功能支持：术后ICU监护、呼吸支持
+
+            • 肾功能保护：液体管理、避免肾毒性药物
+
+
+            🟡 中风险管控：
+
+            • 标准监测：心电监护、血压监测
+
+            • 预防措施：基础预防方案
+
+
+            🟢 低风险管控：
+
+            • 常规监测：标准生命体征监测
+
+            • 标准护理：常规术后护理
+
+            ```
+
+
+            ### 🏥 **麻醉方案建议**
+
+            **推荐麻醉方案：**
+
+            | 麻醉方式 | 适应症 | 优势 | 风险 | 监测要求 |
+
+            |----------|--------|------|------|----------|
+
+            | 全身麻醉 | 具体适应症 | 主要优势 | 主要风险 | 监测要点 |
+
+            | 椎管内麻醉 | 具体适应症 | 主要优势 | 主要风险 | 监测要点 |
+
+
+            ### 📈 **预后评估与随访**
+
+            **预期结果评估：**
+
+            | 评估指标 | 预期值 | 风险因素 | 改善措施 |
+
+            |----------|--------|----------|----------|
+
+            | 住院时间 | X天 | 影响因素 | 优化方案 |
+
+            | 并发症率 | X% | 风险因素 | 预防措施 |
+
+
+            ## 重要声明
+
+            本评估基于最新循证医学证据和国际权威指南，仅供临床参考。最终决策需结合患者具体情况、医院条件和医师临床判断。紧急情况下应立即启动相应应急预案。
+
+            '
+        - id: user
+          role: user
+          text: '请对以下患者进行全面的术前评估：
+
+
+            ## 患者基本信息
+
+            {{#1754544373939.patient_description#}}
+
+
+            ## 详细数据
+
+
+            ### 基础信息
+
+            - 年龄：{{#1754544373939.patient_data.age#}}岁
+
+            - 性别：{{#1754544373939.patient_data.gender#}}
+
+            - 体重：{{#1754544373939.patient_data.weight#}}kg
+
+            {% if 1754544373939.patient_data.height > 0 %}
+
+            - 身高：{{#1754544373939.patient_data.height#}}cm
+
+            - BMI：{{#1754544373939.patient_data.bmi#}} ({{#1754544373939.patient_data.bmi_category#}})
+
+            {% endif %}
+
+
+            ### 生命体征
+
+            {% if 1754544373939.patient_data.vitals.temperature > 0 %}
+
+            - 体温：{{#1754544373939.patient_data.vitals.temperature#}}℃
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.vitals.pulse > 0 %}
+
+            - 脉搏：{{#1754544373939.patient_data.vitals.pulse#}}次/分
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.vitals.respiration > 0 %}
+
+            - 呼吸：{{#1754544373939.patient_data.vitals.respiration#}}次/分
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.vitals.blood_pressure %}
+
+            - 血压：{{#1754544373939.patient_data.vitals.blood_pressure#}}
+
+            {% endif %}
+
+
+            ### 实验室检查
+
+            {% if 1754544373939.patient_data.lab_results.hemoglobin > 0 %}
+
+            - 血红蛋白：{{#1754544373939.patient_data.lab_results.hemoglobin#}}g/L
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.lab_results.white_blood_cell > 0 %}
+
+            - 白细胞：{{#1754544373939.patient_data.lab_results.white_blood_cell#}}×10⁹/L
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.lab_results.platelet > 0 %}
+
+            - 血小板：{{#1754544373939.patient_data.lab_results.platelet#}}×10⁹/L
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.lab_results.glucose > 0 %}
+
+            - 血糖：{{#1754544373939.patient_data.lab_results.glucose#}}mmol/L
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.lab_results.creatinine > 0 %}
+
+            - 肌酐：{{#1754544373939.patient_data.lab_results.creatinine#}}μmol/L
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.lab_results.albumin > 0 %}
+
+            - 白蛋白：{{#1754544373939.patient_data.lab_results.albumin#}}g/L
+
+            {% endif %}
+
+
+            ### 凝血功能
+
+            {% if 1754544373939.patient_data.coagulation.pt > 0 %}
+
+            - PT：{{#1754544373939.patient_data.coagulation.pt#}}s
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.coagulation.aptt > 0 %}
+
+            - APTT：{{#1754544373939.patient_data.coagulation.aptt#}}s
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.coagulation.inr > 0 %}
+
+            - INR：{{#1754544373939.patient_data.coagulation.inr#}}
+
+            {% endif %}
+
+
+            ### 病史信息
+
+            - 既往病史：{% if 1754544373939.patient_data.medical_history %}{{#1754544373939.patient_data.medical_history#}}{%
+            else %}无{% endif %}
+
+            - 过敏史：{% if 1754544373939.patient_data.allergies %}{{#1754544373939.patient_data.allergies#}}{%
+            else %}无{% endif %}
+
+            - 当前用药：{% if 1754544373939.patient_data.medications %}{{#1754544373939.patient_data.medications#}}{%
+            else %}无{% endif %}
+
+            {% if 1754544373939.patient_data.cardiovascular_history %}
+
+            - 心血管疾病史：{{#1754544373939.patient_data.cardiovascular_history#}}
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.respiratory_history %}
+
+            - 呼吸系统疾病史：{{#1754544373939.patient_data.respiratory_history#}}
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.endocrine_history %}
+
+            - 内分泌疾病史：{{#1754544373939.patient_data.endocrine_history#}}
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.renal_history %}
+
+            - 肾脏疾病史：{{#1754544373939.patient_data.renal_history#}}
+
+            {% endif %}
+
+
+            ### 手术信息
+
+            - 手术类型：{{#1754544373939.patient_data.surgery_type#}}
+
+            {% if 1754544373939.patient_data.surgery_duration > 0 %}
+
+            - 预计手术时长：{{#1754544373939.patient_data.surgery_duration#}}小时
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.surgery_urgency %}
+
+            - 手术紧急程度：{{#1754544373939.patient_data.surgery_urgency#}}
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.anesthesia_preference %}
+
+            - 麻醉方式偏好：{{#1754544373939.patient_data.anesthesia_preference#}}
+
+            {% endif %}
+
+            {% if 1754544373939.patient_data.special_notes %}
+
+            - 特殊情况：{{#1754544373939.patient_data.special_notes#}}
+
+            {% endif %}
+
+
+            ## 风险评估结果
+
+
+            ### 综合风险评估
+
+            - RCRI评分：{{#1754544473939.risk_assessment.rcri_score#}}分
+
+            - 风险等级：{{#1754544473939.risk_assessment.risk_level#}}
+
+            - 心血管并发症风险：{{#1754544473939.risk_assessment.cardiac_risk#}}
+
+            - ASA分级：{{#1754544473939.risk_assessment.asa_grade#}}
+
+
+            ### 识别的风险因素
+
+            - 主要风险因素：{% if 1754544473939.risk_assessment.risk_factors %}{{#1754544473939.risk_assessment.risk_factors#}}{%
+            else %}无特殊风险因素{% endif %}
+
+            - 其他风险：{% if 1754544473939.risk_assessment.additional_risks %}{{#1754544473939.risk_assessment.additional_risks#}}{%
+            else %}无{% endif %}
+
+            - 实验室异常：{% if 1754544473939.risk_assessment.lab_risks %}{{#1754544473939.risk_assessment.lab_risks#}}{%
+            else %}无{% endif %}
+
+            - 凝血功能异常：{% if 1754544473939.risk_assessment.coagulation_risks %}{{#1754544473939.risk_assessment.coagulation_risks#}}{%
+            else %}无{% endif %}
+
+            - 生命体征异常：{% if 1754544473939.risk_assessment.vital_risks %}{{#1754544473939.risk_assessment.vital_risks#}}{%
+            else %}无{% endif %}
+
+
+            请基于以上详细信息，提供全面的术前评估报告，包括：
+
+            1. 详细的风险分层分析
+
+            2. 针对性的术前检查建议
+
+            3. 个性化的术前准备方案
+
+            4. 围手术期风险管控策略
+
+            5. 麻醉方案推荐
+
+            6. 术后监护建议
+
+            7. 预后评估和家属沟通要点
+
+            '
+        selected: false
+        title: 术前评估专家
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 117
+      id: '1754544573939'
+      position:
+        x: 1354.263864764576
+        y: 282
+      positionAbsolute:
+        x: 1354.263864764576
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: 评估报告输出
+        outputs:
+        - value_selector:
+          - '1754544573939'
+          - text
+          value_type: string
+          variable: assessment_report
+        selected: false
+        title: 评估报告输出
+        type: end
+      height: 117
+      id: '1754544673939'
+      position:
+        x: 1632.3047532495552
+        y: 282
+      positionAbsolute:
+        x: 1632.3047532495552
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        dataset_ids:
+        - 5BG6cHHbuVw9RsoNHJayZBhPsWNCejCadKX6yAl2AkOM9ikcaKm+lQMgtxr5O/32
+        desc: ''
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: weighted_score
+          top_k: 4
+          weights:
+            keyword_setting:
+              keyword_weight: 0
+            vector_setting:
+              embedding_model_name: qwen3:30b
+              embedding_provider_name: langgenius/ollama/ollama
+              vector_weight: 1
+        query_variable_selector:
+        - '1754544473939'
+        - processing_status
+        retrieval_mode: multiple
+        selected: true
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 91
+      id: '1755160134348'
+      position:
+        x: 1054.263864764576
+        y: 282
+      positionAbsolute:
+        x: 1054.263864764576
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -35.684420958068245
+      y: 149.70881238848128
+      zoom: 0.6597539553864473
